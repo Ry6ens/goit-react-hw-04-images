@@ -7,15 +7,25 @@ import { useState } from "react";
 
 export default function App() {
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
 
   const getSearch = (search) => {
+    setPage(1);
     setSearch(search);
+  };
+
+  const handleLoadMore = () => {
+    setPage(page + 1);
   };
 
   return (
     <div className={styles.App}>
       <Searchbar getSearch={getSearch} />
-      <ImageGallery query={search} />
+      <ImageGallery
+        query={search}
+        handleLoadMore={handleLoadMore}
+        page={page}
+      />
     </div>
   );
 }
