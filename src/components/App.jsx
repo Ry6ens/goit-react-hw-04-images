@@ -1,7 +1,21 @@
 import styles from "./App.module.scss";
 
-function App() {
-  return <div className={styles.App}>OK</div>;
-}
+import ImageGallery from "./ImageGallery/ImageGallery";
+import Searchbar from "./Searchbar/Searchbar";
 
-export default App;
+import { useState } from "react";
+
+export default function App() {
+  const [search, setSearch] = useState("");
+
+  const getSearch = (search) => {
+    setSearch(search);
+  };
+
+  return (
+    <div className={styles.App}>
+      <Searchbar getSearch={getSearch} />
+      <ImageGallery search={search} />
+    </div>
+  );
+}

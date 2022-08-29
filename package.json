@@ -39,8 +39,10 @@
     ]
   },
   "devDependencies": {
+    "axios": "^0.27.2",
     "gh-pages": "^4.0.0",
     "nanoid": "^4.0.0",
+    "notiflix": "^3.2.5",
     "prop-types": "^15.8.1",
     "react-loader-spinner": "^5.3.3",
     "sass": "^1.54.5"
