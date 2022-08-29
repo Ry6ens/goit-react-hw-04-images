@@ -10,22 +10,22 @@ import Modal from "../Modal/Modal";
 import Loader from "../Loader/Loader";
 import PropTypes from "prop-types";
 
-export default function ImageGallery({ search }) {
+export default function ImageGallery({ query }) {
   const [items, setItems] = useState([]);
-  const [loader, setLoader] = useState(false);
-  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [page, setPage] = useState(1);
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    if (search) {
+    if (query) {
       fetchData();
     }
 
     async function fetchData() {
       try {
-        setLoader(true);
-        const data = await searchPosts(search, page);
+        setIsLoading(true);
+        const data = await searchPosts(query, page);
         console.log(data.totalHits);
         if (data.totalHits > 0) {
           setItems([...data.hits]);
@@ -34,12 +34,13 @@ export default function ImageGallery({ search }) {
         }
         Notiflix.Notify.warning("No hits. Try again");
       } catch (error) {
-        setError(error);
+        setIsError(true);
       } finally {
-        setLoader(false);
+        setIsLoading(false);
       }
     }
-  }, [search]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
 
   useEffect(() => {
     if (page !== 1) {
@@ -48,15 +49,16 @@ export default function ImageGallery({ search }) {
 
     async function fetchData() {
       try {
-        setLoader(true);
-        const data = await searchPosts(search, page);
+        setIsLoading(true);
+        const data = await searchPosts(query, page);
         setItems([...items, ...data.hits]);
       } catch (error) {
-        setError(error);
+        setIsError(true);
       } finally {
-        setLoader(false);
+        setIsLoading(false);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   const handleLoadMore = () => {
@@ -71,11 +73,13 @@ export default function ImageGallery({ search }) {
 
   return (
     <>
+      {isError && Notiflix.Notify.failure("Something went wrong ...")}
+
+      <Loader loader={isLoading} />
+
       <ul className={styles.ImageList}>
         <ImageGalleryItem items={items} onClickImage={getModalImage} />
       </ul>
-
-      <Loader loader={loader} />
 
       {isItems && <Button onClickLoadMore={handleLoadMore} />}
 
@@ -89,7 +93,7 @@ export default function ImageGallery({ search }) {
 }
 
 ImageGallery.propTypes = {
-  search: PropTypes.string.isRequired,
+  query: PropTypes.string.isRequired,
 };
 
 // useEffect(() => {

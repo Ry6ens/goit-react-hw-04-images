@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 export default function Searchbar({ getSearch }) {
   const handleSubmit = (e) => {
     e.preventDefault();
-    const search = e.currentTarget.elements.search.value;
+    const query = e.currentTarget.elements.search.value;
 
-    getSearch(search);
+    getSearch(query);
 
     e.currentTarget.reset();
   };

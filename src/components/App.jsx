@@ -15,7 +15,7 @@ export default function App() {
   return (
     <div className={styles.App}>
       <Searchbar getSearch={getSearch} />
-      <ImageGallery search={search} />
+      <ImageGallery query={search} />
     </div>
   );
 }
